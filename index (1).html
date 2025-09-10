@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cache Hit/Miss Simulator</title>
+    <style>
+        body { 
+          font-family: Times New Roman; 
+          padding: 25px; 
+          margin: 10px;
+          background-color: gray;
+          
+        }
+        input, button {
+          padding: 5px; 
+          margin: 5px 0; 
+          
+          
+        }
+        table { 
+          border-collapse: collapse; 
+          margin-top: 10px; 
+          color:white;
+          
+        }
+        th, td { 
+          border: 1px solid; 
+          padding: 8px; 
+          color: white;
+          
+        }
+    </style>
+</head>
+<body>
+
+<h1 style="color:white;">Cache Memory Hit/Miss Simulator</h1>
+
+<label style="color:white;">Cache Size:</label>
+<input style="color:black"type="number" id="cacheSize" min="1"><br>
+
+<label style="color:white;">Enter Addresses (space-separated):</label><br>
+<input style="color:black;"type="text" id="addresses" style="width: 300px;"><br>
+
+<button onclick="simulateCache()">Run</button>
+
+<h3 style="color:white">Results</h3>
+<table id="resultTable">
+    <tr>
+        <th>Address</th>
+        <th>Cache Line</th>
+        <th>Result</th>
+    </tr>
+</table>
+
+<script>
+function simulateCache() {
+    const size = parseInt(document.getElementById("cacheSize").value);
+    const input = document.getElementById("addresses").value.trim();
+    const addresses = input.split(" ").map(Number);
+    
+    const cache = Array(size).fill(null);
+    const resultTable = document.getElementById("resultTable");
+
+    resultTable.innerHTML = `
+        <tr>
+            <th>Address</th>
+            <th>Cache Line</th>
+            <th>Result</th>
+        </tr>`;
+
+    for (let addr of addresses) {
+        let index = addr % size;
+        let result = (cache[index] === addr) ? "Hit" : "Miss";
+        cache[index] = addr;
+
+        const row = resultTable.insertRow();
+        row.insertCell().textContent = addr;
+        row.insertCell().textContent = index;
+        row.insertCell().textContent = result;
+    }
+}
+</script>
+
+</body>
+</html>
